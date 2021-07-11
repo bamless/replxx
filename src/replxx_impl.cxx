@@ -397,8 +397,8 @@ char32_t Replxx::ReplxxImpl::read_char( HINT_ACTION hintAction_ ) {
 		std::lock_guard<std::mutex> l( _mutex );
 		clear_self_to_end_of_screen();
 		while ( ! _messages.empty() ) {
-			string const& message( _messages.front() );
-			_terminal.write8( message.data(), static_cast<int>( message.length() ) );
+			const std::pair<Replxx::StdFile, std::string>& msg = _messages.front();
+			_terminal.write8( msg.first, msg.second.data(), static_cast<int>( msg.second.length() ) );
 			_messages.pop_front();
 		}
 		repaint();
@@ -617,11 +617,23 @@ void Replxx::ReplxxImpl::disable_bracketed_paste( void ) {
 }
 
 void Replxx::ReplxxImpl::print( char const* str_, int size_ ) {
+	// if ( ( _currentThread == std::thread::id() ) || ( _currentThread == std::this_thread::get_id() ) ) {
+	// 	_terminal.write8( str_, size_ );
+	// } else {
+	// 	std::lock_guard<std::mutex> l( _mutex );
+	// 	_messages.emplace_back( str_, size_ );
+	// 	_terminal.notify_event( Terminal::EVENT_TYPE::MESSAGE );
+	// }
+	// return;
+	print(Replxx::StdFile::STDOUT, str_, size_);
+}
+
+void Replxx::ReplxxImpl::print( Replxx::StdFile std_, char const* str_, int size_ ) {
 	if ( ( _currentThread == std::thread::id() ) || ( _currentThread == std::this_thread::get_id() ) ) {
-		_terminal.write8( str_, size_ );
+		_terminal.write8( std_, str_, size_ );
 	} else {
 		std::lock_guard<std::mutex> l( _mutex );
-		_messages.emplace_back( str_, size_ );
+		_messages.emplace_back( std_, std::string( str_, size_ ) );
 		_terminal.notify_event( Terminal::EVENT_TYPE::MESSAGE );
 	}
 	return;

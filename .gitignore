@@ -12,3 +12,4 @@ history.txt
 *.o
 *~
 .vs
+.vscode

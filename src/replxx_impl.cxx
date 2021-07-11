@@ -617,14 +617,6 @@ void Replxx::ReplxxImpl::disable_bracketed_paste( void ) {
 }
 
 void Replxx::ReplxxImpl::print( char const* str_, int size_ ) {
-	// if ( ( _currentThread == std::thread::id() ) || ( _currentThread == std::this_thread::get_id() ) ) {
-	// 	_terminal.write8( str_, size_ );
-	// } else {
-	// 	std::lock_guard<std::mutex> l( _mutex );
-	// 	_messages.emplace_back( str_, size_ );
-	// 	_terminal.notify_event( Terminal::EVENT_TYPE::MESSAGE );
-	// }
-	// return;
 	print(Replxx::StdFile::STDOUT, str_, size_);
 }
 

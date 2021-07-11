@@ -10,6 +10,7 @@
 #include <termios.h>
 #endif
 
+#include "replxx.hxx"
 #include "utf8string.hxx"
 
 namespace replxx {
@@ -24,8 +25,10 @@ public:
 private:
 #ifdef _WIN32
 	HANDLE _consoleOut;
+	HANDLE _consoleErr;
 	HANDLE _consoleIn;
 	DWORD _origOutMode;
+	DWORD _origErrMode;
 	DWORD _origInMode;
 	bool _autoEscape;
 	WORD _oldDisplayAttribute;
@@ -51,6 +54,7 @@ public:
 	~Terminal( void );
 	void write32( char32_t const*, int );
 	void write8( char const*, int );
+	void write8( Replxx::StdFile, char const*, int);
 	int get_screen_columns(void);
 	int get_screen_rows(void);
 	void enable_bracketed_paste( void );

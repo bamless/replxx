@@ -2165,6 +2165,10 @@ void Replxx::ReplxxImpl::set_no_color( bool val ) {
 	_noColor = val;
 }
 
+bool Replxx::ReplxxImpl::is_color_enabled() {
+	return !_noColor;
+}
+
 /**
  * Display the dynamic incremental search prompt and the current user input
  * line.

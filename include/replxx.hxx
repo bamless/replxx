@@ -593,6 +593,10 @@ public:
 	 */
 	void set_no_color( bool val );
 
+	/*! \brief Returns whether or not output coloring is enabled.
+	 */
+	bool is_color_enabled();
+
 	/*! \brief Set maximum number of entries in history list.
 	 */
 	void set_max_history_size( int len );

@@ -18,6 +18,7 @@ endif()
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(CMakePackageConfigHelpers)
 include(CMakeDependentOption)
@@ -91,7 +92,7 @@ target_compile_options(
 		$<${coverage-config}:-fno-inline -fno-default-inline>
 		$<${coverage-config}:-fno-inline-small-functions>
 		$<${compiler-id-clang-or-gnu}:-Wall -Wextra>
-		$<$<CXX_COMPILER_ID:GNU>:-Wno-unknown-pragmas>
+		$<$<CXX_COMPILER_ID:GNU>:-Wno-unknown-pragmas -Wno-c++20-compat>
 )
 if (NOT CMAKE_VERSION VERSION_LESS 3.13)
 	target_link_options(
